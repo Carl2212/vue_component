@@ -18,7 +18,7 @@
   let tabTitle = [
     {title : 'Test1',content : 'component1',path : './component1',isactive : true},
     {title : 'Test2',content : '',path : './component2',isactive : false},
-    {title : 'Test3',content : 'component3',path : './component3',isactive : false},
+    {title : 'Test3',content : '',path : './component3',isactive : false},
     {title : 'Test4',content : 'component4',path : './component4',isactive : false}
   ];
   let W = window.innerWidth || document.docuemntElement.clientWidth;
@@ -32,16 +32,15 @@
       return {
         title: 'A Vue.js demo for tab',
         tabTitle : tabTitle,
-        width : W
+        width : W,
       }
     },
     methods : {
       loadcontent(index) {
-        console.log(index);
         //循环判断当前组件是否在可视区域范围内
+        let self = this;
         let item = this.$('.tab-content')[index];
         let load = this.children(item , '.loading');
-        let self = this;
         if(load && load.length >0){//内容为空
             setTimeout(function(){
               self.tabTitle[index].content = 'component'+(index+1);
@@ -68,13 +67,13 @@
       },
       converListToArray(nodelist) {
         var res = [];
-        try{
-          res = Array.prototype.splice.call(nodelist);
-        }catch(error){
+        //try{
+          //res = Array.prototype.splice.call(nodelist);
+        //}catch(error){
           for(var i= 0 ; i< nodelist.length ;i++) {
             res.push(nodelist[i]);
           }
-        }
+        //}
         return res;
       },
       children(elem,selector) {
@@ -91,7 +90,6 @@
             }
           }
         }
-        console.log(res);
         return res;
       }
     }

@@ -74,7 +74,7 @@
             }
         },
         mounted() {
-            var elem = document.getElementsByClassName('scroll-page')[0];
+            var elem = document.getElementsByClassName('content')[0];
             elem.addEventListener('touchstart',this._touchStart , false);
             elem.addEventListener('touchmove',this._touchMove , false);
             elem.addEventListener('touchend',this._touchEnd , false);
@@ -86,7 +86,7 @@
             },
             tabchange(index) {
                 this.TS = -(this.W * index);
-                console.log(this.TS);
+                this.distance = -this.TS;
                 this.activeItem = index;
                 //发射事件到父组件上
                 this.$emit('loadcontent',index);
@@ -95,14 +95,34 @@
                 this.moveX = e.touches[0].clientX;
             },
             _touchMove(e) {
-                let x = e.touches[0].clientX - this.moveX;
-                this.TS = x -this.distance;
+                e.preventDefault();
+                let x = this.moveX;
+                if(e.layerX || e.layerX == 0) {
+                    x = event.layerX- this.moveX;
+                }else if(e.offsetX || e.offsetX == 0) {
+                    x = event.offsetX- this.moveX;
+                }else if(e.targetTouches.length == 1) {
+                    var touch = e.targetTouches[0];
+                    x = touch.screenX- this.moveX;
+                }else if(e.touches.length == 1) {
+                    var touch = e.touches[0];
+                    x = touch.clientX- this.moveX;
+                }
+                this.TS = x - this.distance;
             },
             _touchEnd(e){
+                e.preventDefault();
+                //当前释放位置对应的index（不一定是当前索引页，可能已经移动到上一个索引页）
                 let index = Math.abs(Math.ceil(this.TS/W));
-                if(Math.abs(this.TS+this.distance) >= this.W/2) index = index+1;
-                this.distance = index * this.W;
-                console.log(this.W,this.distance);
+                let x = this.TS+this.distance;
+                if(this.TS > 0 ) {//当前漂移位置超出最左，index为0
+                    index = 0;
+                }else if((x <= 0 &&  Math.abs(x) >= this.W/2) || (x > 0 &&  Math.abs(x)<= this.W/2)) {
+                    //移动往左，相对位移为负，此时index为当前索引，移动往右，相对位移为正，此时index为上一个索引
+                    index = index+1;
+                }
+                //极端判断
+                index = (index < 0) ? 0 : (index > this.tabData.length -1 ? this.tabData.length -1 :index);
                 this.tabchange(index);
             }
         }

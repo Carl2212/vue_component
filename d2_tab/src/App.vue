@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>{{ title }}</h1>
-    <h2>——wxh——</h2>
+    <h2>——{{author}}——</h2>
     <tab :tabData = "tabTitle" @loadcontent="loadcontent">
       <div class="tab-content-group">
         <div class="tab-content" :style="{'width' : width+'px'}" v-for="item in tabTitle">
@@ -31,6 +31,7 @@
     data () {
       return {
         title: 'A Vue.js demo for tab',
+        author : 'wxh',
         tabTitle : tabTitle,
         width : W,
       }

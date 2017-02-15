@@ -3,7 +3,7 @@
         <button class="nav-root" @click="drawers()">
             <slot name="nav-icon"></slot>
         </button>
-        <div class="nav-main" :class="{show : isshow,hide : !isshow}">
+        <div class="nav-main" :style="{transform : 'translateX('+trsX+')'}">
             <slot></slot>
         </div>
     </div>
@@ -13,33 +13,51 @@
     export default{
         data(){
             return {
-                isshow : false,
+                trsX : '-100%',
+                targetW : 0,
             }
         },
         methods : {
             drawers() {
-                this.isshow = true;
-
+                this.trsX = 0;
+                this.targetW = document.getElementsByClassName('nav-main')[0].offsetWidth;
                 this.$emit('onshow');
+            },
+            hidedrawers() {
+                this.trsX = '-100%';
+            },
+            drawermove(x) {
+                this.targetW = document.getElementsByClassName('nav-main')[0].offsetWidth;
+                let distance = (this.targetW - x) > 0 ?(this.targetW - x) : 0;
+                this.trsX = -distance+'px';
+            },
+            drawerend() {
+                let w = this.trsX.substring(0,this.trsX.length-3)/1;
+                if(this.targetW + w > this.targetW/2) {
+                    this.trsX = 0;
+                }else{
+                    this.trsX = '-100%';
+                    this.$parent.onhide();
+                }
             }
         }
     }
 </script>
 <style>
-    .show {
-        transform : translateX(0);
-        transition: transform .5s linear;
-    }
-    .hide{
-        transform : translateX(-100%);
-
+    button{
+        padding : 0;
+        margin : 0;
+        background :none;
+        border : none;
     }
     .nav-main{
         position: fixed;
+        z-index:100;
         top : 0;
         left :0 ;
         width: 50%;
         height: 100%;
         background : #fff;
+        transition: transform .5s linear;
     }
 </style>

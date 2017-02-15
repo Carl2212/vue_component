@@ -18,6 +18,4 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.glyphicon-menu:before{
-    content: "\e055";
-}
+.glyphicon-menu:before{content:"\e055";}

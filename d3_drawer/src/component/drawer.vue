@@ -1,10 +1,10 @@
 <template>
     <div class="drawer-box"  :style="{minHeight : iheight,transform : 'translateX('+trsX+')'}">
-        <div @onshow = "onshow()" ref="navModal" class="fl leftwidth">
-            <button class="nav-root" @click="drawers()">
-                <span class="nav-icon glyphicon glyphicon-menu"></span>
+        <div @onshow = "onshow()" ref="navModal" class="fl leftwidth" :style="{height : iheight}">
+            <button class="nav-root nav-icon" @click="drawers()">
+                <span class="glyphicon glyphicon-menu"></span>
             </button>
-            <div class="nav-main" >
+            <div class="nav-main">
                 <slot name="nav"></slot>
             </div>
         </div>
@@ -108,8 +108,7 @@
     }
 
     li {
-        display: inline-block;
-        margin: 0 10px;
+        display: block;
     }
 
     a {
@@ -138,6 +137,7 @@
         text-align: center;
         color: #2c3e50;
         font-size: 15px;
+        vertical-align:top;
     }
 
     .drawer-box .leftwidth{
@@ -181,6 +181,6 @@
         left :0 ;
         width: 300px;
         height: 100%;
-        background : #fff;
+        background : #303030;
     }
 </style>

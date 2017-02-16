@@ -19,3 +19,8 @@
     -moz-osx-font-smoothing: grayscale;
 }
 .glyphicon-menu:before{content:"\e055";}
+.glyphicon-paperclip:before{content : '\e142';}
+.glyphicon-link:before{content : '\e144';}
+.glyphicon-pushpin:before{content : '\e146';}
+.glyphicon-book:before{content : '\e043';}
+.glyphicon-th-large:before{content : '\e010';}

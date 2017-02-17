@@ -1,7 +1,7 @@
 <template>
     <div class="drawer-box"  :style="{minHeight : iheight,transform : 'translateX('+trsX+')'}">
-        <div @onshow = "onshow()" ref="navModal" class="fl leftwidth" :style="{height : iheight}">
-            <button class="nav-root nav-icon" @click="drawers()">
+        <div ref="navModal" class="fl leftwidth" :style="{height : iheight}">
+            <button class="nav-root nav-icon" @click="onshow()">
                 <span class="glyphicon glyphicon-menu"></span>
             </button>
             <div class="nav-main">
@@ -10,7 +10,7 @@
         </div>
         <div class="contrainer fl" :style="{width : iWidth}">
             <slot></slot>
-            <div id="md" class="md" :class="{modal:ismodal}" :style="{height : iheight}"></div>
+            <div id="md" :class="['md',{modal:ismodal}]" :style="{height : iheight}"></div>
         </div>
     </div>
 </template>
@@ -22,14 +22,12 @@
         name: 'drawer',
         data () {
             return {
-                ismodal : false,
-                iheight : iheight+'px',
-                iWidth : iwidth+'px',
-                initx : 0,
-                TS : 0,
+                ismodal : false,//蒙层显示隐藏
+                iheight : iheight+'px',//窗口高
+                iWidth : iwidth+'px',//窗口宽
+                initx : 0,//滑动初始位置
                 trsX : '-300px',
                 targetW : 0,
-
             }
         },
         mounted() {
@@ -63,8 +61,10 @@
             },
             _touchstart(e) {
                 if(e.touches.length > 0 && e.touches[0].clientX > 0 && e.touches[0].clientX < 50) {
+                    //友好提示：蒙层+nav露出痕迹
                     this.ismodal =true;
                     this.initx = e.touches[0].clientX;
+                    this.trsX = '-'+(this.targetW-10)+'px';;
                 }
             },
             _touchmove(e) {
@@ -141,6 +141,7 @@
     }
 
     .drawer-box .leftwidth{
+        position: relative;
         width: auto;
     }
 
@@ -156,9 +157,9 @@
     }
 
     .nav-icon{
-        position: fixed;
+        position: absolute;
         top : 1.25em;
-        left : 310px;
+        right : -1.2em;
         font-size: 1.5em;
         color: #fff;
         z-index: 99;
